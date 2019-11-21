@@ -32,106 +32,107 @@ _To outline the logic of the data analyses conducted in the present study, we la
 
 ## Scripts  
 
-_**Note:** Please modify and confirm the input and output path before executing these scripts. All the file names here assigned for the specific purpose._  
+_**Note:** Please modify and confirm the input and output path before executing these scripts. All the file names here descriptively denote the specific purpose and follow the order of the main text (which see); further explanatory notes are selectively given below._  
 
 + **Subset 17 Rosid Subclades**  
   	- _**extract_Order_tree.sh**_  
   		Usage: bash extract_Order_tree.sh rosids_5g_whole_tree.tre  
-  		_Note: keep "Order_MRCA.txt" file at the same dir as the bash script_  
+  		_Note: Keep the "Order_MRCA.txt" file in the same directory as the bash script_  
   		 
 + **Assembly of Species Distribution Data**  
     - _**Download_rosid_distribution_from_gbif_idigbio_ed.R**_  
-        This R script querys iDigBio and GBIF databases with name validated rosid species sampled in the phylogeny and excluding any coordinates with zero latitude and longitude.  
+        This R script queries iDigBio and GBIF databases with name-validated rosid species sampled in the phylogeny and excluding any coordinates with zero latitude and longitude.  
     
     - _**rosid_samples_associate_with_distribution_and_traits_cleaning.py**_  
-        This python scipt (python3) is modified from [Folk et al. (2019)](https://www.pnas.org/content/116/22/10874), which is able to assocciate tmeperature traits data sets with rosid distribution data, remove pixelwise duplicates, and output files with a standard clean format.  For more details see comments inside the script.  
+        This python script (python3) is a high-throughput workflow modified from [Folk et al. (2019)](https://www.pnas.org/content/116/22/10874) to assocciate data from a raster layer with distribution data, remove pixelwise duplicates, and output files with a standard cleaned format. For more details see comments inside the script.  
         
-        _This Script also used for association Climatic Tropics data ( [Owens et al. (2017)](https://onlinelibrary.wiley.com/doi/full/10.1111/geb.12672) ) with rosid distribution data._  
+        _This script was used for the mean annual temperature and Köppen climate datasets described above._  
         
     - _**Extra_point_associate_bio1_cluster_job.sbatch**_  
-        UF HiPerGator Slurm job script, contains the example usage of the python script above 
+        UF HiPerGator Slurm job script, containing example usage of the python script above in a high-performance computing environment.
         
     - _**Species_occurrence_clean_sdv_rm-integer.R**_  
-      For each individual species, we used this R script to calculate the geographic centroid and the Euclidean distance from each species occurrence to this centroid, then removing any geographic outliers beyond three standard deviations distant, as well as suspect integer latitude and longitude.  
+      For each individual species, we used this R script to calculate the geographic centroid, and then the Euclidean distance from each species occurrence to this centroid, finally removing any geographic outliers beyond three standard deviations distance. Finally, we removed any occurrence records with suspect integer latitudes and longitudes (this type of reporting would suggest either a low-accuracy georeference or a deliberately obscured locality).  
     
 + **Assembly of Temperature Data Layers**  
     - _**Mean_annual_Climatic_Geographic_Temperature_layers_assembling.R**_  
-        This script assembled mean of annual temperature (bio.1) for each of sampled rosid species into one csv table, and scored the binary geographic and climatic tropicality datasets, and outputing `csv` file, respectively  
+        This script assembles means of mean annual temperature (bio.1) for each of sampled rosid species into one csv table, and scores the binary geographic and climatic tropicality datasets (criteria in main text), and outputs a `csv` file, respectively,
         
-        _See first three datasets from **Temperature Data Layers** above_
+        _See the first three datasets from **Temperature Data Layers** above for which this script was used._
         
 + **Diversification Analyses**  
     - **DR**  
         + _**DR_statistic.R**_  
-          This script conducts DR statistic for the rosid whole tree and each ordinal tree. The method was described by [Jetz et al. (2012)](https://www.nature.com/articles/nature11631), and the script was derived from [Harvey et al. (2016)](https://www.pnas.org/content/114/24/6328)
+          This script computes the DR statistic for the entire rosid tree and each ordinal tree (note that a tip rate for the same species calculated with these two trees will differ somewhat in scaling by including a tree root-to-tip path of greater or lesser length). The method was described by [Jetz et al. (2012)](https://www.nature.com/articles/nature11631), and the script was derived from [Harvey et al. (2016)](https://www.pnas.org/content/114/24/6328).
     
     - **RPANDA**  
         + _**RPANDA.R**_  
-          This script fit **9** time- and **9** temperature-dependent likelihood diversification birth-death [models](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.12526) to rosid 17 subclades, outputing a summary table of parameters and values estimaed from each model for each rosid subclade.  
+          This script fits **9** time- and **9** temperature-dependent likelihood diversification birth-death [RPANDA models](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.12526) to rosid 17 subclades, and outputs a summary table of parameters and values estimated from each model for each rosid subclade.  
           
         + _**RPANDA_summary_AkaikeWeight.R**_  
-          This scipt reads in the summary table generated above, the selected the model with the smallest Akaike Information Criterion (AIC; [Akaike, 1974](https://ieeexplore.ieee.org/document/1100705)) value and largest [Akaike weights](https://www.ncbi.nlm.nih.gov/pubmed/15117008) as the best diversification model for eahc rosid subclade, then output into a table (see **Table S6**).
+          This scipt reads in the summary table generated above, and then selects the model with the smallest Akaike Information Criterion (AIC; [Akaike, 1974](https://ieeexplore.ieee.org/document/1100705)) value and largest [Akaike weight](https://www.ncbi.nlm.nih.gov/pubmed/15117008) as the best diversification model for eahc rosid subclade, then outputs these values into a table (see **Table S6**).
     
     - **BAMM**  
         - _**Run_priors.sh**_  
-          This bash script is used for “setBAMMpriors” for BAMM analyses; combing information from `rosid_17_order_sampling_fraction.csv` and `write_prior.R`  
+          This bash script is used for “setBAMMpriors” in BAMM analyses; combining information from `rosid_17_order_sampling_fraction.csv` and `write_prior.R`  
           
         - _**write_prior.R**_  
           This dummy script is used by `Run_priors.sh` and will output parameters for each order to feed `BAMM_diversification.config`  
           
         - _**BAMM_diversification.config**_  
-            BAMM control file for diversification analyses, contains replacible paramters, which would be modified by `Run_config.sh` script below for each specific order.
+            BAMM control file for diversification analyses, containing a replaceable parameter template, which would be modified by `Run_config.sh` script below for each specific order.
             
-            If not converged, this file will be modified again, then loading event data from previous run; more details see [BAMM website](http://bamm-project.org/quickstart.html)  
+            If not converged, this file should be modified again to load event data from previous run with additional generations; for more details see [BAMM website](http://bamm-project.org/quickstart.html). 
             
         - _**Run_config.sh**_  
-         This bash script will replace those ambiguous letters (e.g., XXX) to specific values (`rosid_17_order_sampling_fraction.csv`) corresponding to each rosid order, as well as parameters produced by `Run_priors.sh` script. After this step, the BAMM configure file is ready to run   
+         This bash script will replace parameter templates (above; denoted XXX) with specific values (`rosid_17_order_sampling_fraction.csv`) corresponding to each rosid order, as well as parameters produced by `Run_priors.sh` script. After this step, the BAMM configure file is ready to run   
          
         - _**BAMM_postrun_analyses_Order_Batch.R**_   
-          This script evaluate mcmc convergence of BAMM runs for each order (`Order`), and also summarize `tip rate`, `mean lambda`, and `rate-through-time matrix` ect for downstream analyses.  Also save event data as `.rds` file for readin efficiency.  
+          This script evaluate MCMC convergence of BAMM runs for each order (`Order`), and also extracts summaries of `tip rates`, `mean lambda`, `rate-through-time matrices`, etc. for downstream analyses. It also saves event data as an `.rds` file for read-in efficiency.  
 
 + **Rates and Traits Correlation Test**  
     - _**essim.R**_  
-      This script is inside function sourced by `ES_SIM_Test.R`; more details and usage see author's github [page](https://github.com/mgharvey/ES-sim).  
+      This script is a function sourced by `ES_SIM_Test.R`; for more details and usage see this script's author's GitHub [page](https://github.com/mgharvey/ES-sim); this script is redistributed here for convenience but users are advised to check the source repository for the most up-to-date version.
       
     - _**traitDependent_functions.R**_  
-        This script is inside function sourced by  `Fisse_test.R`; more details, examples and usage see [here](https://github.com/macroevolution/fisse).  
+        This script is a function sourced by `Fisse_test.R`; for more details, examples and usage, see [here](https://github.com/macroevolution/fisse); this script is redistributed here for convenience but users are advised to check the source repository for the most up-to-date version. 
         
     - _**ES_SIM_Test.R**_  
-      Testing trait-dependent (i.e., continuous mean annual temperature dataset) diversification using tip rate correlation for rosid subclades and whole tree (see **Table S3**) 
+      Run script for testing trait-dependent diversification using tip rate correlations with the continuous mean annual temperature dataset  for rosid subclades and the whole tree (see **Table S3**) 
       
     - _**Fisse_test.R**_  
-      Testing state-dependent (i.e., two binary tropicality datasets) diversification using FiSSE for rosid subclades and whole tree (see **Table S3**)    
+      Run script for testing state-dependent diversification with the two binary tropicality datasets using FiSSE for rosid subclades and the whole tree (see **Table S3**)    
       
     - _**Tm_traits_STRAPP.R**_  
-      Testing correlation between tip rates and all three temperature data layers using STRAPP in BAMMtools for 17 rosid ordinal subtrees (see **Table S4**)  
+      Run script for testing the correlation between tip rates and all three temperature data layers using STRAPP in BAMMtools for the 17 rosid ordinal subtrees (see **Table S4**)  
       
     - _**Pagle_lambda_test.R**_  
-      This scipt is used for testing the presence of phylogenetic niche conservatism in the three contemporary temperature niche datasets via the lambda transform and likelihood ratio test (see **Table S2**).  
+      This script is used for testing the presence of phylogenetic niche conservatism in the three contemporary temperature niche datasets via the lambda transform and likelihood ratio test (see **Table S2**).  
       
     - _**P_value_adjust_familywise.R**_  
-      This script is used for _p-value_ family-wise adjust among 17 rosid subclades for each trait and each test analyses (see **Tables S3, S4**)  
+      This script is used for computing family-wise adjusted _p-values_ for each trait and each statistical test type among the 17 rosid subclades  (see **Tables S3, S4**)  
       
     
 + **Sensitivity Test**  
     - _**sensitivity_test1_rosid_distribution_region_bias.R**_  
-      This script conducts spatial analysis of the distribution pattern for sampled rosid species richness mapped golbally (see **Figure S2**).  
+      This script computes and maps per-site species richness for sampled rosid species (see **Figure S2**).  
       
     - _**sensitivity_test2_drop_temp_species_Tm_traits_STRAPP.R**_  
-      Given evidence for over-representation in some non-tropical areas (results from script above), we implemented a sensitivity analysis by randomly dropping 10%, 30%, or 50% of non-tropical species, then reran STRAPP analyses above and assessed the impact on estimated tip rates and downstream phylogenetic correlation (see **Table S5**).
+      Given evidence for over-representation in some non-tropical areas (results from the previous script; see main text), we implemented a sensitivity analysis by randomly dropping 10%, 30%, or 50% of non-tropical species, then rerunning STRAPP analyses and assessing the impact on estimated tip rates and downstream phylogenetic correlation (see **Table S5**).
       
 + **Regression Model Test**  
     - _**./misc/Fig_S1.DiverRate_TM_linear_and_exponential_regression_models_plot.R**_  
-    This script is plotting the assessment in the relationship of diversification rate from BAMM and global paleo-temperature, we fit linear and exponential regression models, using AIC for model choice and reporting correlation for the best-fit model for each rosid order (see **Figure S1**). 
+    This script plots the relationship of diversification rates from BAMM with global paleo-temperatures, fits linear and exponential regression models, and uses model choice via AIC to report correlation for the best-fit model for each rosid order (see **Figure S1**). 
     
 + **misc**  
     - _**summary_datalayers_tropical_nontropical_percentage.R**_  
-    This script summary species richness and distribution data, and all the temperature layes for each of 17 rosid roders (see **Table S1**).  
+    This script summary species richness and distribution data, and all the temperature layers for each of 17 rosid roders (see **Table S1**).  
   
     - _**rosid_17order_tmep_trop_precentage_calc.R**_  
-      This script calculate tropical and non-tropical species percentage among each of 17 rosid order (see piechart in **Fig_2**)  
+      This script calculates tropical and non-tropical species percentages for each of 17 rosid order (see piechart in **Fig_2**)  
+      
     - _**Fig_1.R and Fig_2.R**_  
-      These scripts used to generate two figures (see **Fig_1** and **Fig_2**) respectively.  
+      This script uses the output of the previous two scripts to generate two figures (see **Fig_1** and **Fig_2**) respectively.  
       
     
 ## Requirements
@@ -143,8 +144,8 @@ _**Note:** Please modify and confirm the input and output path before executing 
 + **[Newick Utilities](http://cegg.unige.ch/newick_utils)**  
   _The link with installation and mannual_  
   
-  _The data analyses in this study was conducted in MAC OS laptop and Linux cluster system in [HiPerGator](https://www.rc.ufl.edu/)._  
+  _The data analyses in this study were conducted either on a MacBook Pro laptop (OS-X) or on a Linux cluster system ([HiPerGator](https://www.rc.ufl.edu/))._  
   
   
   
-_**If you found these codes are useful, please cite our work/or this repo.**_
+_**If you found this repository useful, please cite our work and/or this repo.**_
