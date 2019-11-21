@@ -1,32 +1,34 @@
 # rosid_NCOMMS-19-37964-T
 
-_Scripts and documentation are provided here with an assumption that users have basic knowledge of UNIX shell, R and python, including changing the working directory, and pointing to the input and output path linking data to properly execute the scripts. In order to fully reproduce the results in our study, high performance computing clusters ([HiPerGator](https://www.rc.ufl.edu/) at University of Florida) must be used._  
+_Scripts and documentation are provided here with an assumption that users have basic knowledge of UNIX shell, R and python, including changing the working directory, and pointing to the input and output path to link data and properly execute the scripts. In order to fully reproduce the results in our study, high performance computing clusters ([HiPerGator](https://www.rc.ufl.edu/) at University of Florida) must be used._  
 
-_For the logic integrity of the data analyses conducted in present study, we layout below each of our scripts based on the order of the workflow as described in the main text. All the scripts and their relative folders are descriptively named based on their primary functionalities in the analyses, and detailed under each highlighted bullet point._
+_To outline the logic of the data analyses conducted in the present study, we lay out below each of our scripts based on the order of the workflow as described in the main text. All the scripts and their relative folders are descriptively named based on their primary functionalities in the analyses, and detailed under each highlighted bullet point._
 
 
 ## Datasets
 
 
   + **Rosid Ultrametric Trees**  
-  As described in the main text, all analyses were run in parallel across 17 subclades corresponding to all rosid orders recognized in [APG IV (2016)](https://onlinelibrary.wiley.com/doi/10.1111/boj.12385); for DR related analyses, we also used the total tree, since it was computationally feasible to use semi-parametric methods (see details in the main text).  
+  As described in the main text, all analyses were run in parallel across 17 subclades corresponding to all rosid orders recognized in [APG IV (2016)](https://onlinelibrary.wiley.com/doi/10.1111/boj.12385); for DR related analyses, we also used the total tree, since it was computationally feasible to use semi-parametric methods at this data scale (see details in the main text).  
 
 + **Species Distribution Data**  
-  We queried all rosid species sampled in our tree from iDigBio and GBIF using R packages rgbif v1.3.0 and ridigbio v0.3.5 on June 4th, 2019. No further taxonomic name resolution has been done for these rosid names, since all rosid species names in our tree were validated and reconciled by The Plant List and OpenTree databases in [Sun et al. (2019)](https://www.biorxiv.org/content/10.1101/694950v2.full).
+  We queried iDigBio and GBIF for all rosid species sampled in our tree using R packages rgbif v1.3.0 and ridigbio v0.3.5 on June 4th, 2019. No further taxonomic name resolution was performed for these rosid names, since all rosid species names in our tree were validated and reconciled by The Plant List and OpenTree databases in [Sun et al. (2019)](https://www.biorxiv.org/content/10.1101/694950v2.full).
 
 
 + **Temperature Data Layers**  
   We used four datasets to assess the relationship of temperature and rosid diversification.
     - Rosid_Annual_Tm_mean.csv  
     
-      _continuous trait_  
-      _Note: this data was directly downloaded from WorldClim website, then associated with rosid species distribution data using `python script` described below._  
+      _A continuous trait representing mean annual temperature, directly downloaded from the WorldClim website, then associated with species distribution data using the python script described below._  
       
     - Rosid_Climatic_Tropics_binary.csv  
+      _A binary trait representing tropicality under the Köppen climate classification, as calculated by [Owens et al. (2017)](https://onlinelibrary.wiley.com/doi/full/10.1111/geb.12672) and associated with species distribution data using the python script described below._  
+      
     - Rosid_Geographic_Tropics_binary.csv  
-      _Derived from **Species Distribution Data** mentioned above, and detailed in the materials and methods section and Supplementary files, as well as scripts list below._  
+      _A binary trait representing tropicality under a geographic definition, as described in the main text and calculated directly from species distribution data._
+      
     - Global_paleo-temperature.csv  
-      _Historical oxygen isotope (δ18O) data were derived from [Cramer et al. (2009)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2008PA001683)_  
+      _Historical oxygen isotope (δ18O) data derived from [Cramer et al. (2009)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2008PA001683)._  
 
 ## Scripts  
 
