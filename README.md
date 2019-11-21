@@ -26,11 +26,11 @@ _For the logic integrity of the data analyses conducted in present study, we lay
     - Rosid_Geographic_Tropics_binary.csv  
       _Derived from **Species Distribution Data** mentioned above, and detailed in the materials and methods section and Supplementary files, as well as scripts list below._  
     - Global_paleo-temperature.csv  
-      _Historical oxygen isotope (δ18O) data were derived from from [Cramer et al. (2009)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2008PA001683)_  
+      _Historical oxygen isotope (δ18O) data were derived from [Cramer et al. (2009)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2008PA001683)_  
 
 ## Scripts  
 
-_**Note:** Please modify and confirm the input and output path before emply these scripts. All the file names here assigned for specific purpose._  
+_**Note:** Please modify and confirm the input and output path before executing these scripts. All the file names here assigned for the specific purpose._  
 
 + **Subset 17 Rosid Subclades**  
   	- _**extract_Order_tree.sh**_  
@@ -54,14 +54,14 @@ _**Note:** Please modify and confirm the input and output path before emply thes
     
 + **Assembly of Temperature Data Layers**  
     - _**Mean_annual_Climatic_Geographic_Temperature_layers_assembling.R**_  
-        This script assembled mean of annual temperature (bio.1) for each ofsampled rosid species into one csv table, and scored the binary geographic and climatic tropicality datasets, and output csv file, respectively  
+        This script assembled mean of annual temperature (bio.1) for each of sampled rosid species into one csv table, and scored the binary geographic and climatic tropicality datasets, and outputing `csv` file, respectively  
         
         _See first three datasets from **Temperature Data Layers** above_
         
 + **Diversification Analyses**  
     - **DR**  
         + _**DR_statistic.R**_  
-          This script conducts DR statistic for rosid whole tree and each ordinal tree. The method was described by [Jetz et al. (2012)](https://www.nature.com/articles/nature11631), and the script was derived from [Harvey et al. (2016)](https://www.pnas.org/content/114/24/6328)
+          This script conducts DR statistic for the rosid whole tree and each ordinal tree. The method was described by [Jetz et al. (2012)](https://www.nature.com/articles/nature11631), and the script was derived from [Harvey et al. (2016)](https://www.pnas.org/content/114/24/6328)
     
     - **RPANDA**  
         + _**RPANDA.R**_  
@@ -80,10 +80,10 @@ _**Note:** Please modify and confirm the input and output path before emply thes
         - _**BAMM_diversification.config**_  
             BAMM control file for diversification analyses, contains replacible paramters, which would be modified by `Run_config.sh` script below for each specific order.
             
-            If not converged, this file will modified again, by loading event data from previous run; more details see [BAMM website](http://bamm-project.org/quickstart.html)  
+            If not converged, this file will be modified again, then loading event data from previous run; more details see [BAMM website](http://bamm-project.org/quickstart.html)  
             
         - _**Run_config.sh**_  
-         This bash script will replace those ambiguous letters (e.g., XXX) to specific information (`rosid_17_order_sampling_fraction.csv`) corresponding to each rosid order, as well as parameters from `Run_priors.sh` script. After this step, the BAMM configure file is ready to run   
+         This bash script will replace those ambiguous letters (e.g., XXX) to specific values (`rosid_17_order_sampling_fraction.csv`) corresponding to each rosid order, as well as parameters produced by `Run_priors.sh` script. After this step, the BAMM configure file is ready to run   
          
         - _**BAMM_postrun_analyses_Order_Batch.R**_   
           This script evaluate mcmc convergence of BAMM runs for each order (`Order`), and also summarize `tip rate`, `mean lambda`, and `rate-through-time matrix` ect for downstream analyses.  Also save event data as `.rds` file for readin efficiency.  
@@ -108,7 +108,7 @@ _**Note:** Please modify and confirm the input and output path before emply thes
       This scipt is used for testing the presence of phylogenetic niche conservatism in the three contemporary temperature niche datasets via the lambda transform and likelihood ratio test (see **Table S2**).  
       
     - _**P_value_adjust_familywise.R**_  
-      This script is used for _p-value_ family-wise adjust among 17 rosid subclades for each trait and each test analyses (see **Tables S3,S4**)  
+      This script is used for _p-value_ family-wise adjust among 17 rosid subclades for each trait and each test analyses (see **Tables S3, S4**)  
       
     
 + **Sensitivity Test**  
@@ -142,6 +142,7 @@ _**Note:** Please modify and confirm the input and output path before emply thes
   _The link with installation and mannual_  
   
   _The data analyses in this study was conducted in MAC OS laptop and Linux cluster system in [HiPerGator](https://www.rc.ufl.edu/)._  
+  
   
   
 _**If you found these codes are useful, please cite our work/or this repo.**_
