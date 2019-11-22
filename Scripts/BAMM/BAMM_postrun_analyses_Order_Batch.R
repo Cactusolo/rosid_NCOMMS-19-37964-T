@@ -28,7 +28,7 @@ for(i in 1:length(Order)){
   #BAMM object
   edata <- getEventData(tree, paste(clade, "_event_data_final.txt", sep=""), burnin = 0.1)
   summary(edata)
-  edata <- saveRDS(file=paste("results/", clade, "_edata.rds", sep=""))
+  edata <- saveRDS(edata, file=paste("results/", clade, "_edata.rds", sep=""))
   #edata <- readRDS(file=paste("results/", clade, "_edata.rds", sep=""))
   
   #Assessing MCMC convergence
@@ -52,7 +52,7 @@ for(i in 1:length(Order)){
   TR <- getTipRates(edata, returnNetDiv = FALSE, statistic = "median")
   file <- paste0("results/", clade, "_BAMM_TipRates.csv", sep="")
   cat("Tip_label,Rate\n", file=file)
-  write.table(TR$lambda.avg, sep=",", file=file, col.names = FALSE, append = TRUE)
+  write.table(TR$lambda.avg, sep=",", file=file, col.names = FALSE, quote=FALSE, append = TRUE)
   
   ##### Prepare Mean Rate Matrix ####
   rtt <- getRateThroughTimeMatrix(edata)
@@ -61,7 +61,7 @@ for(i in 1:length(Order)){
   mean.netdiv <- Mean.lamda - Mean.mu
   
   Mean.Rate.Matrix <- cbind.data.frame(rtt$times, Mean.lamda, Mean.mu, mean.netdiv)
-  write.csv(Mean.Rate.Matrix, paste("results/", clade, "_Mean_Rate_Matrix.csv", sep=""))
+  write.csv(Mean.Rate.Matrix, paste("results/", clade, "_Mean_Rate_Matrix.csv", sep=""), row.names = FALSE, quote=FALSE)
   
   saveRDS(rtt, paste("./results/", clade, "_RateThroughTimeMatrix.rds", sep=""))
 }
