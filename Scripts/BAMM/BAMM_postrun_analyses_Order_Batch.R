@@ -9,7 +9,10 @@ library("coda")
 
 cladelist <- read.csv("./Scripts/BAMM/Order", header=F)
 
-Order <- cladelist$V1
+Order <- as.character(cladelist$V1)
+
+#define a file with header for caculated the effective sample size (ESS)
+cat("clade\tlogLik\tN_shift\n", file="../Rosids_17Order_ESS_convergence.txt")
 
 for(i in 1:length(Order)){
   
@@ -28,7 +31,7 @@ for(i in 1:length(Order)){
   #BAMM object
   edata <- getEventData(tree, paste(clade, "_event_data_final.txt", sep=""), burnin = 0.1)
   summary(edata)
-  edata <- saveRDS(edata, file=paste("results/", clade, "_edata.rds", sep=""))
+  saveRDS(edata, file=paste("results/", clade, "_edata.rds", sep=""))
   #edata <- readRDS(file=paste("results/", clade, "_edata.rds", sep=""))
   
   #Assessing MCMC convergence
@@ -46,7 +49,7 @@ for(i in 1:length(Order)){
   N_shift <- effectiveSize(postburn$N_shift) #effective sample size on N-shifts
   ESSample <- cbind.data.frame(clade, logLik, N_shift)
   
-  write.table(ESSample, "../Rosids_17Order_ESS_convergence.txt", row.names=F, quote=F, append=T, sep=",")
+  write.table(ESSample, "../Rosids_17Order_ESS_convergence.txt", row.names=F, quote=F, append=T, sep="\t")
   
   #tip rates
   TR <- getTipRates(edata, returnNetDiv = FALSE, statistic = "median")
