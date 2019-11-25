@@ -1,6 +1,6 @@
 # rosid_NCOMMS-19-37964-T
 
-_Scripts and documentation are provided here with an assumption that users have basic knowledge of UNIX shell, R and python, including changing the working directory, and pointing to the input and output path to link data and properly execute the scripts. In order to fully reproduce the results in our study, high performance computing clusters ([HiPerGator](https://www.rc.ufl.edu/) at University of Florida) must be used._  
+_Scripts and documentation are provided here with an assumption that users have basic knowledge of UNIX shell, R and python, including changing the working directory, and pointing to the input and output path to link data and properly execute the scripts. In order to fully reproduce the results in our study, high performance computing clusters (such as [HiPerGator](https://www.rc.ufl.edu/) at the University of Florida) must be used._  
 
 _To outline the logic of the data analyses conducted in the present study, we lay out below each of our scripts based on the order of the workflow as described in the main text. All the scripts and their relative folders are descriptively named based on their primary functionalities in the analyses, and detailed under each highlighted bullet point._
 
