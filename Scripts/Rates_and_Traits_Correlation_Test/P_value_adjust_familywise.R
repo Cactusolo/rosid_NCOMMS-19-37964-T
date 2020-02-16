@@ -13,6 +13,7 @@ dd <- function(x){
 essim.new <- essim %>% mutate(pv.adjust=dd(`P-value`))
 
 #read in p-value of FiSSE from each order (binary traits)
+#confirmed that p.adjust function handle the "NA" correctly
 
 fisse.Koep <- read_csv(files[2], col_names = T)
 fisse.Koep.new <- fisse.Koep %>% mutate(pv.adjust=dd(pval))

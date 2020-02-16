@@ -1,6 +1,6 @@
 # rosid_NCOMMS-19-37964-T
 
-_Scripts and documentation are provided here with an assumption that users have basic knowledge of UNIX shell, R and python, including changing the working directory, and pointing to the input and output path to link data and properly execute the scripts. In order to fully reproduce the results in our study, high performance computing clusters ([HiPerGator](https://www.rc.ufl.edu/) at University of Florida) must be used._  
+_Scripts and documentation are provided here with an assumption that users have basic knowledge of UNIX shell, R and Python, including changing the working directory, and pointing to the input and output path to link data and properly execute the scripts. In order to fully reproduce the results in our study, high performance computing clusters ([HiPerGator](https://www.rc.ufl.edu/) at University of Florida) must be used._  
 
 _To outline the logic of the data analyses conducted in the present study, we lay out below each of our scripts based on the order of the workflow as described in the main text. All the scripts and their relative folders are descriptively named based on their primary functionalities in the analyses, and detailed under each highlighted bullet point._
 
@@ -13,6 +13,8 @@ _To outline the logic of the data analyses conducted in the present study, we la
 
 + **Species Distribution Data**  
   We queried iDigBio and GBIF for all rosid species sampled in our tree using R packages rgbif v1.3.0 and ridigbio v0.3.5 on June 4th, 2019. No further taxonomic name resolution was performed for these rosid names, since all rosid species names in our tree were validated and reconciled by The Plant List and OpenTree databases in [Sun et al. (2019)](https://www.biorxiv.org/content/10.1101/694950v2.full).
+  Usage:
+    See "readme.txt" inside the folder.
 
 
 + **Temperature Data Layers**  
@@ -98,31 +100,39 @@ _**Note:** Please modify and confirm the input and output path before executing 
         This script is a function sourced by `Fisse_test.R`; for more details, examples and usage, see [here](https://github.com/macroevolution/fisse); this script is redistributed here for convenience but users are advised to check the source repository for the most up-to-date version. 
         
     - _**ES_SIM_Test.R**_  
-      Run script for testing trait-dependent diversification using tip rate correlations with the continuous mean annual temperature dataset  for rosid subclades and the whole tree (see **Table S3**) 
+      Run script for testing trait-dependent diversification using tip rate correlations with the continuous mean annual temperature dataset  for rosid subclades and the whole tree (see **Table 1**) 
       
     - _**Fisse_test.R**_  
-      Run script for testing state-dependent diversification with the two binary tropicality datasets using FiSSE for rosid subclades and the whole tree (see **Table S3**)    
+      Run script for testing state-dependent diversification with the two binary tropicality datasets using FiSSE for rosid subclades and the whole tree (see **Table 2**)    
       
     - _**Tm_traits_STRAPP.R**_  
-      Run script for testing the correlation between tip rates and all three temperature data layers using STRAPP in BAMMtools for the 17 rosid ordinal subtrees (see **Table S4**)  
+      Run script for testing the correlation between tip rates and all three temperature data layers using STRAPP in BAMMtools for the 17 rosid ordinal subtrees (see **Table S3**)  
       
     - _**Pagle_lambda_test.R**_  
       This script is used for testing the presence of phylogenetic niche conservatism in the three contemporary temperature niche datasets via the lambda transform and likelihood ratio test (see **Table S2**).  
       
     - _**P_value_adjust_familywise.R**_  
-      This script is used for computing family-wise adjusted _p-values_ for each trait and each statistical test type among the 17 rosid subclades  (see **Tables S3, S4**)  
+      This script is used for computing family-wise adjusted _p-values_ for each trait and each statistical test type among the 17 rosid subclades  (see **Tables 1, 2, S3**)  
+      
+    - _**HiSSE_Runs.R**_  
+      This script is used to run compared the fit of four different models: (one BiSSE-like model, one BiSSE-like null model, one HiSSE full model, and one HiSSE 2-state null model). All models and parameters are described in Table S4 (also see Supporting Information Method S3).  
+      The purpose of this analysis is to test for associations between tropicality and
+483 diversification rate, and to test for potential unobserved diversification drivers.  
       
     
 + **Sensitivity Test**  
     - _**sensitivity_test1_rosid_distribution_region_bias.R**_  
-      This script computes and maps per-site species richness for sampled rosid species (see **Figure S2**).  
+      This script computes and maps per-site species richness for sampled rosid species (see **Figure S1**). The same as "_Fig.S1_rosid_species richness_distribution.R_" in **misc** folder.
       
     - _**sensitivity_test2_drop_temp_species_Tm_traits_STRAPP.R**_  
-      Given evidence for over-representation in some non-tropical areas (results from the previous script; see main text), we implemented a sensitivity analysis by randomly dropping 10%, 30%, or 50% of non-tropical species, then rerunning STRAPP analyses and assessing the impact on estimated tip rates and downstream phylogenetic correlation (see **Table S5**).
+      Given evidence for over-representation in some non-tropical areas (results from the previous script; see main text), we implemented a sensitivity analysis by randomly dropping 10%, 30%, or 50% of non-tropical species, then rerunning STRAPP analyses and assessing the impact on estimated tip rates and downstream phylogenetic correlation (see **Table S5**).  
+      
+    - _**Fig.2.R**_  
+      This script is used to generate Figure 2. It is combined scitpt with spatial anaylses of tip rates and tip age. See R scipts: "_sensitivity_test3_rosid_distribution_tiprates_bias.R_", "_Sensitivity_test/sensitivity_test4_rosid_distribution_tip-age.R_", "_Fig.2DTip_age_box_plot.R_" in *misc* folder.  
       
 + **Regression Model Test**  
-    - _**./misc/Fig_S1.DiverRate_TM_linear_and_exponential_regression_models_plot.R**_  
-    This script plots the relationship of diversification rates from BAMM with global paleo-temperatures, fits linear and exponential regression models, and uses model choice via AIC to report correlation for the best-fit model for each rosid order (see **Figure S1**). 
+    - _**./misc/Fig_S2.R**_  
+    This script plots the relationship of diversification rates from BAMM with global paleo-temperatures, fits linear and exponential regression models, and uses model choice via AIC to report correlation for the best-fit model for each rosid order (see **Figure S2**). 
     
 + **misc**  
     - _**summary_datalayers_tropical_nontropical_percentage.R**_  
@@ -131,8 +141,13 @@ _**Note:** Please modify and confirm the input and output path before executing 
     - _**rosid_17order_tmep_trop_precentage_calc.R**_  
       This script calculates tropical and non-tropical species percentages for each of 17 rosid order (see piechart in **Fig_2**)  
       
-    - _**Fig_1.R and Fig_2.R**_  
-      This script uses the output of the previous two scripts to generate two figures (see **Fig_1** and **Fig_2**) respectively.  
+    - _**Fig_S3.R and FigS4.BAMM_Diversification_shifts_time.R**_  
+      These two script are used to generate two supplementary figures:  
+        1) net diversification curves through time plot with the percentage piechart of tropical and nontropical rosid species, and paleo-temperatures curves in the background (see **Fig_S3**)  
+        2) Ridge plots of the age distribution of diversification rate shift for each rosid order and boxplot shows a summary of overall ages of each diversification shift detected across all 17 orders(see **Fig_S4**).  
+      
+    - _**rosid_species_count_0-10_zone_vs_30-40_lat_zone.R and species_occ_tropical_nontropical_check.R**_  
+      Two scripts are to used respond reviewers' questions about 1) species richness in tropical zone and temperate zone, respectively; 2) how many species has their occurance data both ranging in tropical and non-tropical zones.  
       
     
 ## Requirements

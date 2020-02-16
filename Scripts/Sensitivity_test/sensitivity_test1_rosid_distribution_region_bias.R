@@ -10,7 +10,7 @@ library(dplyr)
 dggs <- dgconstruct(spacing=200, metric=FALSE, resround='down')
 
 #Load rosid distribution data set
-rosid <- read.csv("./data/rosid_18269_species_occ.csv", header = F)
+rosid <- read.csv("./Datasets/Species_Distribution_Data/rosid_18269_species_occ.csv", header = F)
 
 names(rosid) <- c("Species", "Lon", "Lat")
 
@@ -53,5 +53,5 @@ p<- ggplot() +
 
 p
 
-ggsave("rosid_diversity_distribution_plot.pdf")
+ggsave("./results/rosid_diversity_distribution_plot.pdf")
 

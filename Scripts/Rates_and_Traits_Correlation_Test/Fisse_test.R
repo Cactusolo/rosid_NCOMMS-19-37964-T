@@ -14,7 +14,7 @@ library("geiger")
 library("phangorn")
 library("diversitree")
 #import function
-source("./traitDependent_functions.R")
+source("./Scripts/Rates_and_Traits_Correlation_Test/traitDependent_functions.R")
 
 # parameter for the function
 # FiSSE: A simple nonparametric test for the
@@ -84,3 +84,26 @@ for(i in 1:length(Order)){
 
   })
 }
+
+#whole tree Bisse
+#TREE: 
+tree <- read.tree("./Datasets/Rosid_Ultrametric_Trees/rosids_5g_whole_tree.tre")
+tree$tip.label <- sub("^.(.*)ceae_", "", tree$tip.label)
+
+# trait <- Trop.Geo
+trait <- Trop.Koep
+trait <- trait[trait$Species %in% tree$tip.label, ]
+states <- trait[,2] # commnent this if run Trop.Geo
+# states <- trait[,3] # commnent this if run Trop.Koep
+names(states) <- as.character(trait[,1])
+
+v <- drop.tip(tree, setdiff(tree$tip.label, names(states)))
+v <- check_and_fix_ultrametric(v)
+
+bisse_opt = 5  
+# dir.create("results")
+
+bisse <- fitDiversitree_allmodels(v, states, nopt=bisse_opt)
+write.csv(bisse, "./results/rosid_5g_bisse_Trop.Koep.csv")
+saveRDS(bisse, "./results/rosid_5g_bisse_Trop.Koep.rds")
+
