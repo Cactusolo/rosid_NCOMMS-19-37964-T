@@ -172,7 +172,7 @@ _**Note:** Please modify and confirm the input and output path before executing 
   
   
   
-_**If you found this repository useful, please cite our work and/or this repo:**_  
+_**If you found this repository useful, please cite our work and/or this repo: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3843441.svg)](https://doi.org/10.5281/zenodo.3843441)**_  
 Citation:
-Sun et al. (2020, May 24). Cactusolo/rosid_NCOMMS-19-37964-T v1.0 (Version v1.0.3). Zenodo. http://doi.org/10.5281/zenodo.xxxx  
+Sun et al. (2020, May 25). Cactusolo/rosid_NCOMMS-19-37964-T: Code and data for rosid_NCOMMS-19-37964 (Version V.1.0). Zenodo. http://doi.org/10.5281/zenodo.3843441  
 
