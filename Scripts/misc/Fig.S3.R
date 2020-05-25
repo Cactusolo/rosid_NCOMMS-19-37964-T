@@ -51,10 +51,10 @@ p1 <- ggplot(shift_age_table, aes(x = Age, y = Order, fill = Order)) +
   theme_ridges(grid = FALSE, center_axis_labels = TRUE) + 
   theme(axis.line.x = element_line(colour = "black"),legend.position = "none") +
   scale_fill_manual(values = Colors) +
-  labs(x ="Age (myr)") 
+  labs(x ="Age (Myr)") 
 
 p2 <- ggplot(shift_age_table, aes(y=Age)) +
-  geom_boxplot(fill = "lightgray", color = alpha("black", 0.5)) + labs(y ="Age (myr)") +
+  geom_boxplot(fill = "lightgray", color = alpha("black", 0.5)) + labs(y ="Age (Myr)") +
   theme_bw() +
   theme(
         panel.grid.major = element_blank(),
@@ -67,10 +67,10 @@ p2 <- ggplot(shift_age_table, aes(y=Age)) +
 
 pp <- p1 + annotation_custom(ggplotGrob(p2), xmin = 82, xmax = 125, 
                        ymin = 1.2, ymax = 4.8) +
-  annotate("text", x=-20, y=11, label= "A", size = 5) + 
-  annotate("text", x = 82, y=4.8, label = "B", size = 5)
+  annotate("text", x=-20, y=11, label= "a", size = 5) + 
+  annotate("text", x = 82, y=4.6, label = "b", size = 5)
 
-ggsave("./results/rosid_5g_BAMM_diversification_shifts_age_for_major_clades.pdf", width = 7, height = 6)
+ggsave("./results/Fig.S3.pdf", width = 6, height = 6)
 
 
 

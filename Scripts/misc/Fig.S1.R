@@ -53,5 +53,5 @@ p<- ggplot() +
 
 p
 
-ggsave("./results/rosid_diversity_distribution_plot.pdf")
+ggsave("Fig.S1.pdf")
 

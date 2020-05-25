@@ -1,17 +1,15 @@
 rm(list=ls())
 library("BAMMtools") 
 library("mapplots")
-# library("RPANDA")
-# library("strap")
 library("scales")
-source("plotRateThroughTime_function_modified.R")
+source("./Scripts/misc/plotRateThroughTime_function_modified.R")
 
 #Tm data
-InfTemp <- read.csv("./data/cramer_etal_2009_d18O_temperature_clean.csv", header = TRUE)
+InfTemp <- read.csv("./Datasets/Temperature_Data_Layers/Global_paleo-temperature.csv", header = TRUE)
 smoothingSpline <-  smooth.spline(InfTemp$Temp_C ~ InfTemp$Age, spar=0.35)
 
 #Koep tropical binary data
-Tropical <- read.csv("data/rosid_17order_binary_Trop.Koep.traits_sppercentage.csv", header = TRUE, stringsAsFactors = F)
+Tropical <- read.csv("./results/rosid_17order_binary_Trop.Koep.traits_sppercentage.csv", header = TRUE, stringsAsFactors = F)
 #rosid clades
 Clade_list<- c("Brassicales","Celastrales","Crossosomatales","Cucurbitales",
                "Fabales","Fagales","Geraniales","Huerteales","Malpighiales",
@@ -23,12 +21,12 @@ col=c("chocolate4","darkmagenta","paleturquoise4", "green4", "blue", "yellow3","
 
 inter.cc <- "gray70"
 
-pdf("Fig_2.Rosid_17order_Net_Diversification_Rate_Against_Tm_Koep.pdf", height = 10, width = 10)
-par(mfrow = c(3, 3), mar = c(3,3,1,4), oma = c(0,0.5,0.5,0))
+pdf("./results/Fig3.3.pdf", height = 10, width = 10)
+par(mfrow = c(3, 3), mar = c(3,1,1,4), oma = c(0,0.2,0.5,0.5))
 for (i in 1:length(Clade_list)){
   Order <- Clade_list[i]
-  rate_matrix <- readRDS(paste0("./data/5g_rtt_mtx/", Order, "_RateThroughTimeMatrix.rds", sep=""))
-  Tm.rate_matrix <- readRDS(paste0("./data/5g_rtt_mtx/", Order, "_Tm.niche_RateThroughTimeMatrix.rds", sep=""))
+  rate_matrix <- readRDS(paste0("./Datasets/5g_rtt_mtx/", Order, "_RateThroughTimeMatrix.rds", sep=""))
+  Tm.rate_matrix <- readRDS(paste0("./Datasets/5g_rtt_mtx/", Order, "_Tm.niche_RateThroughTimeMatrix.rds", sep=""))
 
   plotRateThroughTime3(rate_matrix, ratetype = "netdiv", useMedian=TRUE, intervalCol=inter.cc, lwd=1, avgCol=col[i], smooth=TRUE,cex.lab = 0.7, xline=2, yline=2, cex.axis=0.7)
   
@@ -66,15 +64,15 @@ par(new=TRUE)
 # add.pie(PP, x=max(rate_matrix$times)/5, y=18, radius=1.4, labels=lbls, col=c(alpha("light green", 0.6), alpha("coral2", 0.6)), cex=0.5)
 add.pie(PP, x=max(rate_matrix$times)/5, y=18, radius=1.4, labels="", col=c(alpha("blue", 0.6), alpha("orange", 0.6)), cex=0.5)
 if(i ==9){
-  mtext(c('(a)', '(b)', '(c)'), outer = TRUE, line = -2.8, at = c(0.01,0.36,0.7), font=2)
-  mtext(c('(d)', '(e)', '(f)'), outer = TRUE, line = -28.5, at = c(0.01,0.36,0.69), font=2)
-  mtext(c('(g)', '(h)', '(i)'), outer = TRUE, line = -53, at = c(0.01,0.365,0.69), font=2)
+  mtext(c('a', 'b', 'c'), outer = TRUE, line = -2.6, at = c(0.01,0.36,0.7), font=2)
+  mtext(c('d', 'e', 'f'), outer = TRUE, line = -27.5, at = c(0.01,0.36,0.69), font=2)
+  mtext(c('g', 'h', 'i'), outer = TRUE, line = -52, at = c(0.01,0.365,0.69), font=2)
   
 }
 if (i==17){
-  mtext(c('(j)', '(k)', '(l)'), outer = TRUE, line = -3, at = c(0.01,0.37,0.695), font=2)
-  mtext(c('(m)', '(n)', '(o)'), outer = TRUE, line = -28, at = c(0.01,0.36,0.7), font=2)
-  mtext(c('(p)', '(q)'), outer = TRUE, line = -54.5, at = c(0.01,0.36), font=2)
+  mtext(c('j', 'k', 'l'), outer = TRUE, line = -2.5, at = c(0.01,0.37,0.695), font=2)
+  mtext(c('m', 'n', 'o'), outer = TRUE, line = -27, at = c(0.01,0.36,0.7), font=2)
+  mtext(c('p', 'q'), outer = TRUE, line = -52.5, at = c(0.01,0.36), font=2)
 }
 
 }

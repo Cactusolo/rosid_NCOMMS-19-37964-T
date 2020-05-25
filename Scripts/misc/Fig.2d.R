@@ -1,6 +1,6 @@
 rm(list=ls())
 library("dplyr")
-
+library("scales")
 tip_age <- read.csv("./results/rosid_5g_tip_age_cloest-node.csv", header=TRUE)
 Keop_trop <- read.csv("./Datasets/Temperature_Data_Layers/Rosid_Climatic_Tropics_binary.csv", header = TRUE)
 Geo_trop <- read.csv("./Datasets/Temperature_Data_Layers/Rosid_Geographic_Tropics_binary.csv", header = TRUE)
@@ -14,7 +14,7 @@ nontropic_age <- tip_age[tip_age$Species %in% Keop_trop[Keop_trop$Tropical=="0",
 nontropic_age$Tropical <- rep("0", dim(nontropic_age)[1])
 
 tip_age_tropical <- rbind.data.frame(Tropic_age, nontropic_age)
-write.csv(tip_age_tropical, "./results/rosid_5g_tip_age_keop_tropicality.csv", quote = F, row.names = F)
+# write.csv(tip_age_tropical, "./results/rosid_5g_tip_age_keop_tropicality.csv", quote = F, row.names = F)
 #Geo_trop-age
 Tropic_age.geo <- tip_age[tip_age$Species %in% Geo_trop[Geo_trop$T.binary=="1",]$Species,]
 Tropic_age.geo$Tropical <- rep("1", dim(Tropic_age.geo)[1])
@@ -24,7 +24,7 @@ nontropic_age.geo <- tip_age[tip_age$Species %in% Geo_trop[Geo_trop$T.binary=="0
 nontropic_age.geo$Tropical <- rep("0", dim(nontropic_age.geo)[1])
 
 tip_age_tropical.geo <- rbind.data.frame(Tropic_age.geo, nontropic_age.geo)
-write.csv(tip_age_tropical.geo, "./results/rosid_5g_tip_age_geo_tropicality.csv", quote = F, row.names = F)
+# write.csv(tip_age_tropical.geo, "./results/rosid_5g_tip_age_geo_tropicality.csv", quote = F, row.names = F)
 
 #remove outlior function
 outlier <- function(x) {
@@ -38,9 +38,9 @@ color <- c("orange", "blue", "orange", "blue")
 
 dat <- list("tropical.k"=Tropic_age$Age, "nontropical.k"=nontropic_age$Age, "tropical.g"=Tropic_age.geo$Age, "nontropical.g"=nontropic_age.geo$Age)
 
-yrange <- c(0, quantile(unlist(sapply(dat, function(x) x)), 0.985))
+yrange <- c(0, quantile(unlist(sapply(dat, function(x) x)), 0.995))
 
-pdf("./results/rosid_tip_age_tropical_vs_non_tropical_boxplot.pdf", width=6, height=4)
+pdf("./results/Fig.2d.pdf", width=6, height=4)
 plot.new()
 plot.window(xlim = c(1, 5), ylim = yrange)
 axis(1, at = c(1, seq(1.5,5, by=1)), labels = NA)
@@ -50,6 +50,9 @@ axis(2, at = c(0, axTicks(2)), cex.axis = 1, mgp = c(3, 0.7, 0))
 
 for (j in 1:length(dat)) {
   jj <- j + 0.5
+  
+  myjitter <- jitter(rep(jj, length(dat[[j]])))
+  points(myjitter, dat[[j]], pch=20, col=alpha("gray", 0.13))
   
   if(quantile(dat[[j]],  qrange[2], na.rm=TRUE) > yrange[2]){
     dat[[j]] <- outlier(dat[[j]])
@@ -61,18 +64,21 @@ for (j in 1:length(dat)) {
   segments(jj - width/3, qStats[1], jj + width/3, qStats[1], lend=1)
   segments(jj - width/3, qStats[5], jj + width/3, qStats[5], lend=1)
   segments(jj - width/3, qStats[3], jj + width/3, qStats[3], lwd=2, lend=1)
+  
 }
-abline(v = 3, lty=2, col="gray70")
-
-title(main = "Climatic         Geographic", cex=0.8, line = -0.5)
+#abline(v = 3, lty=2, col="gray70")
+segments(3,-0.5, 3, 40, lty=2, col="gray70")
+title(main = "Climatic         Geographic", cex=0.5, line = -0.3)
 mtext("Age (Myr)", side = 2, line = 2)
 
 dev.off()
 
 #### Climatic ####
-t.test(Tropic_age$Age, nontropic_age$Age, alternative="greater")
+T.k <- t.test(Tropic_age$Age, nontropic_age$Age)
+saveRDS(T.k, "./results/T-test_Keop.age.rds")
 #p-value < 2.2e-16
 
 ####Geo####
-t.test(Tropic_age.geo$Age, nontropic_age.geo$Age, alternative="greater")
+T.g <- t.test(Tropic_age.geo$Age, nontropic_age.geo$Age)
+saveRDS(T.g, "./results/T-test_geo.age.rds")
 #p-value < 2.2e-16
