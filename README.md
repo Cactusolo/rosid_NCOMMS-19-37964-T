@@ -150,7 +150,7 @@ _**Note:** Please modify and confirm the input and output path before executing 
     This script summary species richness and distribution data, and all the temperature layers for each of 17 rosid roders (see **Supplementary Table 1**).  
   
     - _**rosid_17order_tmep_trop_precentage_calc.R**_  
-      This script calculates tropical and non-tropical species percentages for each of 17 rosid order (see piechart in **Fig_3**)  
+      This script calculates tropical and non-tropical species percentages for each of 17 rosid order (see piechart in **Fig.3**)  
       
     - _**plotRateThroughTime_function_modified.R**_  
     This script is modified from BAMMtools for our own plotting purpuse. It will be "sourced" from _Fig.3.R_ script.  
