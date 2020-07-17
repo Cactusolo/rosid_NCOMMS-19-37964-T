@@ -118,20 +118,20 @@ fit.multi.rpanda <- function(tree, par, Tem.C, Order, NN, dof, file1) {
   
   #We also tested nine environmental-dependent diversification models inferred from oxygen isotopes (δ18O) covering major changes of global temperature since the Late Cretaceous ( ~ 113 Myr to present; Cramer et al., 2009; Condamine et al., 2013).
   
-  #10)	No extinction rate (mu, µ = 0), and constant speciation rate with temperature (x) (lambda, λ; hereafter bcst.d0.x)
+  #10)	No extinction rate (mu, µ = 0), and constant speciation rate (lambda, λ; hereafter bcst.d0.x)
   # t is time
   # x is temperature
   # y is a vector of initial values feeding to the functions of λ and µ
-  f.lamb.x = function(t,x,y){y[1]*x}
+  f.lamb.x = function(t,x,y){y[1]}
   f.mu.x = function(t,x,y){0}
 
   model <- "bcst.d0.x"
   bcst.d0.x <- fit_env(tree, Tem.C, tot_time, f.lamb.x, f.mu.x, lamb_par=par[[1]][1], mu_par=c(), f=fraction, cst.lamb=TRUE, fix.mu=TRUE, cond="crown", df=dof, dt=1e-3)
   write.table(paste0(Order, ",", model, ",", bcst.d0.x$lamb_par[1], ",NA,0,NA,", bcst.d0.x$aicc, sep=""), file=file1, row.names=F, col.names=F, quote=F, append=T)
   
-  #11)	Constant speciation and extinction with temperature (x) (here as bcst.dcst.x)
-  f.lamb.x = function(t,x,y){y[1]*x}
-  f.mu.x = function(t,x,y){y[1]*x}
+  #11)	Constant speciation and extinction (here as bcst.dcst.x)
+  f.lamb.x = function(t,x,y){y[1]}
+  f.mu.x = function(t,x,y){y[1]}
 
   model <- "bcst.dcst.x"
   bcst.dcst.x <- fit_env(tree, Tem.C, tot_time, f.lamb.x, f.mu.x, lamb_par=par[[2]][1], mu_par=par[[2]][2], cst.lamb=TRUE, cst.mu=TRUE, cond="crown", f=fraction, df=dof, dt=1e-3)
@@ -153,32 +153,32 @@ fit.multi.rpanda <- function(tree, par, Tem.C, Order, NN, dof, file1) {
   bvar.l.d0.x <- fit_env(tree, Tem.C, tot_time, f.lamb.x, f.mu.x, lamb_par=par[[4]][c(1,2)], mu_par=c(), fix.mu=TRUE, f=fraction, cond="crown", df=dof, dt=1e-3)
   write.table(paste0(Order, ",", model, ",", bvar.l.d0.x$lamb_par[1], ",", bvar.l.d0.x$lamb_par[2], ",0,NA,", bvar.l.d0.x$aicc, sep=""), file=file1, row.names=F, col.names=F, quote=F, append=T)
   
-  #14)	 Exponential variation in speciation rate with temperature (x) and constant extinction with temperature (x) (here as bvar.dcst.x)
+  #14)	 Exponential variation in speciation rate with temperature (x) and constant extinction (here as bvar.dcst.x)
   f.lamb.x = function(t,x,y){y[1] * exp( y[2] * x)}
-  f.mu.x = function(t,x,y){y[1]*x}
+  f.mu.x = function(t,x,y){y[1]}
   
   model <- "bvar.dcst.x"
   bvar.dcst.x <- fit_env(tree, Tem.C, tot_time, f.lamb.x, f.mu.x, lamb_par=par[[5]][c(1,2)], mu_par=par[[5]][3], expo.lamb=TRUE, cst.mu=TRUE,cond="crown", f=fraction, df=dof, dt=1e-3)
   write.table(paste0(Order, ",", model, ",", bvar.dcst.x$lamb_par[1], ",", bvar.dcst.x$lamb_par[2], ",", bvar.dcst.x$mu_par[1], ",NA,", bvar.dcst.x$aicc, sep=""), file=file1, row.names=F, col.names=F, quote=F, append=T)
   
-  #15)	Linear variation in speciation rate with temperature (x) and constant extinction with temperature (x) (here as bvar.l.dcst.x)
+  #15)	Linear variation in speciation rate with temperature (x) and constant extinction (here as bvar.l.dcst.x)
   f.lamb.x = function(t,x,y){y[1] + y[2]*x}
-  f.mu.x = function(t,x,y){y[1]*x}
+  f.mu.x = function(t,x,y){y[1]}
 
   model <- "bvar.l.dcst.x"
   bvar.l.dcst.x <- fit_env(tree, Tem.C, tot_time, f.lamb.x, f.mu.x, lamb_par=par[[6]][c(1,2)],mu_par=par[[6]][3], cst.mu=TRUE, cond="crown", f=fraction, df=dof, dt=1e-3)
   write.table(paste0(Order, ",", model, ",", bvar.l.dcst.x$lamb_par[1], ",", bvar.l.dcst.x$lamb_par[2], ",", bvar.l.dcst.x$mu_par[1], ",NA,", bvar.l.dcst.x$aicc, sep=""), file=file1, row.names=F, col.names=F, quote=F, append=T)
   
-  #16)	Constant speciation rate with temperature (x) and exponential variation in extinction with temperature (x) (here as bcst.dvar.x)
-  f.lamb.x = function(t,x,y){y[1]*x}
+  #16)	Constant speciation and exponential variation in extinction with temperature (x) (here as bcst.dvar.x)
+  f.lamb.x = function(t,x,y){y[1]}
   f.mu.x = function(t,x,y){y[1] * exp(y[2] * x)}
   
   model <- "bcst.dvar.x"
   bcst.dvar.x <- fit_env(tree, Tem.C, tot_time, f.lamb.x, f.mu.x, lamb_par=par[[7]][1], mu_par=par[[7]][c(2,3)], cst.lamb=TRUE, expo.mu=TRUE, cond="crown", f=fraction, df=dof, dt=1e-3)
   write.table(paste0(Order, ",", model, ",", bcst.dvar.x$lamb_par[1], ",NA,", bcst.dvar.x$mu_par[1], ",", bcst.dvar.x$mu_par[2], ",", bcst.dvar.x$aicc, sep=""), file=file1, row.names=F, col.names=F, quote=F, append=T)
   
-  #17)	Constant speciation rate with temperature (x) and linear variation in extinction with temperature (x) (here as bcst.dvar.l.x)
-  f.lamb.x = function(t,x,y){y[1]*x}
+  #17)	Constant speciation and linear variation in extinction with temperature (x) (here as bcst.dvar.l.x)
+  f.lamb.x = function(t,x,y){y[1]}
   f.mu.x = function(t,x,y){y[1] + y[2]*x}
 
   model <- "bcst.dvar.l.x"
