@@ -176,3 +176,5 @@ _**If you found this repository useful, please cite our work and/or this repo: [
 Citation:
 Sun et al. (2020, May 25). Cactusolo/rosid_NCOMMS-19-37964-T: Code and data for rosid_NCOMMS-19-37964 (Version V.1.0). Zenodo. http://doi.org/10.5281/zenodo.3843441  
 
+We thank Dr. Alexander Gamisch for his valuable discussion on models in RPANDA.  
+
