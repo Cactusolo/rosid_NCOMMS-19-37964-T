@@ -165,7 +165,7 @@ _**Note:** Please modify and confirm the input and output path before executing 
 + **Bash** 
 + **[gdal](https://gdal.org/)**  
   _The link with installation and mannual_
-+ **[Newick Utilities](http://cegg.unige.ch/newick_utils)**  
++ **[Newick Utilities](https://github.com/tjunier/newick_utils)**  
   _The link with installation and mannual_  
   
   _The data analyses in this study were conducted either on a MacBook Pro laptop (OS-X) or on a Linux cluster system ([HiPerGator](https://www.rc.ufl.edu/))._  
